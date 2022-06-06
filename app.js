@@ -1,5 +1,13 @@
 let pages = []
 
+const worker = new Worker('./myWorker.js');
+
+worker.addEventListener('message', logMessageFromWorker)
+
+function logMessageFromWorker(message){
+  console.log('Messaggio provieniente dal worker: ', message.data);
+}
+
 function loadPages() {
   fetch("./pages.json")
   .then(response => response.json())
@@ -13,7 +21,6 @@ function displayPages(loadedPages){
   const navMenu = document.getElementById('nav-menu');
 
   for (const page of pages) {
-    console.log(page);
     const a = document.createElement('a');
     const node = document.createTextNode(page.name);
     a.appendChild(node);
@@ -44,12 +51,15 @@ function changePage(hash){
     }
   }
 
-  console.log(selectedPage);
 
   const container = document.getElementById('page-container');
 
   container.innerHTML = selectedPage.html;
 
+}
+
+function activateWorker(){
+  worker.postMessage('ciao amico lavoratore')
 }
 
 

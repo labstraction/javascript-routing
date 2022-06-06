@@ -1,0 +1,16 @@
+
+self.addEventListener('message', messageRecived)
+
+
+function messageRecived(message){
+  console.log('Messaggio ricevuto dal worker: ', message.data);
+
+  let sum = 0;
+
+  for (let i = 0; i < 10000000000; i++) {
+    sum = sum + i;
+    
+  }
+
+  postMessage(sum);
+}
